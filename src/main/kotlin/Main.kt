@@ -63,7 +63,7 @@ fun main(args: Array<String>) {
         it.toByteArray()
     }
 
-    println("The encrypted text is: ")
+    println("The encrypted text (as hexadecimal) is: ")
     println(rsaCipherText.toUByteArray().joinToString(separator = "") { it.toString(16) })
     println("The encrypted text (as ASCII) is: ")
     println(rsaCipherText.toString(Charset.forName("ASCII")))
