@@ -27,3 +27,13 @@ tasks.withType<KotlinCompile> {
 application {
     mainClass.set("MainKt")
 }
+
+tasks.withType<Jar>{
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+
+    exclude("META-INF/**")
+
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+}
