@@ -22,8 +22,10 @@ fun main(args: Array<String>) {
 
     val cipherText = applySymmetricCipher(des, "This is fun".toByteArray())
 
-    println("The encrypted text is: ")
+    println("The encrypted text (as hexadecimal) is: ")
     println(cipherText.toUByteArray().joinToString(separator = "") { it.toString(16) })
+    println("The encrypted text (as ASCII) is: ")
+    println(cipherText.toString(Charset.forName("ASCII")))
 
     val desDecrypt = Cipher.getInstance("DES")
     desDecrypt.init(Cipher.DECRYPT_MODE, key)
@@ -31,7 +33,6 @@ fun main(args: Array<String>) {
     val decrypted = applySymmetricCipher(desDecrypt, cipherText)
 
     println("The decrypted text is: ")
-    println(decrypted.toUByteArray().joinToString(separator = "") { it.toString(16) })
     println(decrypted.toString(Charset.forName("ASCII")))
 
     println()
@@ -64,7 +65,8 @@ fun main(args: Array<String>) {
 
     println("The encrypted text is: ")
     println(rsaCipherText.toUByteArray().joinToString(separator = "") { it.toString(16) })
-
+    println("The encrypted text (as ASCII) is: ")
+    println(rsaCipherText.toString(Charset.forName("ASCII")))
 
     val rsaDecrypt = Cipher.getInstance("RSA")
     rsaDecrypt.init(Cipher.DECRYPT_MODE, privateKey)
@@ -93,7 +95,7 @@ fun applySymmetricCipher(cipher: Cipher, plainText: ByteArray): ByteArray {
 
         if (endIndex <= plainText.size) {
             val nextPlainBlock = plainText.slice(beginningIndex until endIndex).toByteArray()
-            val nextCipherBlock = ByteArray(outputSize)
+            val nextCipherBlock = ByteArray(blockSize)
             cipher.update(nextPlainBlock, 0, blockSize, nextCipherBlock)
             cipherText.addAll(nextCipherBlock.toTypedArray())
             if (endIndex == plainText.size) {
